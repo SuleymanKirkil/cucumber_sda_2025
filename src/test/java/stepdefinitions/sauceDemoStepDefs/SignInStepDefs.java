@@ -50,4 +50,14 @@ public class SignInStepDefs {
     public void iEnterAsPassword(String password) {
         signInPage.enterPassword(password);
     }
+    @Then("I should see error message {string}")
+    public void i_should_see_error_message(String message) {
+        signInPage.isErrorMessageVisible(message);
+    }
+    @Then("I should remain on login page")
+    public void i_should_remain_on_login_page() {
+        Assert.assertFalse(Driver.getDriver().getCurrentUrl().contains("inventory"));
+        Assert.assertTrue(signInPage.isLogginButtonVisible());
+    }
+
 }

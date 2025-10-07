@@ -4,7 +4,7 @@
   I want to sign in
   so that I can use the sauce demo application
 
-  @positiveSignIn @SauceDemo
+  @positiveSignIn1 @SauceDemo
   Scenario: Sign in with valid credentials
     Given I am on sauceDemo application
     When I enter standart_user as username
@@ -31,7 +31,7 @@
       Then I should be redirected to Products page
       And I should see product inventory
 
-    @positiveSignIn3 @SauceDemo
+    @positiveSignIn4 @SauceDemo
     Scenario: Sign in as problem user
       Given I am on sauceDemo application
       When I enter "visual_user" as username

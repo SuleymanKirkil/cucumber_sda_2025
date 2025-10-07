@@ -16,6 +16,9 @@ public class SignInPage {
     private WebElement passwordField;
     @FindBy(id = "login-button")
     private WebElement loginButton;
+    @FindBy(xpath = "//h3[@data-test]")
+    private WebElement errorMessage;
+
 
     public void enterUserName(String username){
         usernameField.clear();
@@ -37,4 +40,10 @@ public class SignInPage {
     }
 
 
+    public boolean isErrorMessageVisible(String message) {
+        return errorMessage.getText().contains(message);
+    }
+    public boolean isLogginButtonVisible() {
+        return loginButton.isDisplayed();
+    }
 }
