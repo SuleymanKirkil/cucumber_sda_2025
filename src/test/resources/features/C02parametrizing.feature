@@ -26,7 +26,7 @@
     Scenario: Sign in as problem user
       Given I am on sauceDemo application
       When I enter "problem_user" as username
-      And I enter "secret_sauce" as password
+      And I enter "secret_sauc" as password
       And I click on sign in button
       Then I should be redirected to Products page
       And I should see product inventory
