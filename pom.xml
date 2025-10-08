@@ -53,10 +53,26 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.4</version>
                 <configuration>
-                    <testFailureIgnore>true</testFailureIgnore>
+                    <!-- Parallel execution mode -->
+                    <parallel>methods</parallel>
+                    <threadCount>3</threadCount>
+
+                    <!-- Fork settings - NEW METHOD -->
+                    <forkCount>3</forkCount>
+                    <reuseForks>false</reuseForks>
+
+                    <!-- Combine argLines - IMPORTANT! -->
+                    <argLine>
+                        -Duser.language=en
+                        -Xmx1024m
+                        -Dfile.encoding=UTF-8
+                    </argLine>
+
+                    <useFile>false</useFile>
                     <includes>
-                        <include>**/Runner.java</include>
+                        <include>**/RegressionParalleRunner.java</include>
                     </includes>
+                    <testFailureIgnore>true</testFailureIgnore>
                 </configuration>
             </plugin>
 

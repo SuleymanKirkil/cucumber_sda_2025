@@ -9,47 +9,62 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import java.time.Duration;
 
 public class Driver {
-    
-    private static WebDriver driver;
-    private static final String BROWSER = ConfigReader.getProperty("browser");
-    
+
+    private static ThreadLocal<WebDriver> driverThread = new ThreadLocal<>();
+
+    private Driver() {
+    }
+
     public static WebDriver getDriver() {
-        if (driver == null) {
-            initializeDriver();
+        if (driverThread.get() == null) {
+            // Default to chrome if no browser is set
+            String browser = ConfigReader.getProperty("browser");
+            initializeDriver(browser);
         }
-        return driver;
+        return driverThread.get();
     }
-    
-    private static void initializeDriver() {
-        switch (BROWSER.toLowerCase()) {
-            case "chrome":
-                ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--start-maximized");
-                chromeOptions.addArguments("--disable-notifications");
-                driver = new ChromeDriver(chromeOptions);
-                break;
-                
-            case "firefox":
-                driver = new FirefoxDriver();
-                break;
-                
+
+
+    // New method to accept browser parameter
+    public static WebDriver getDriver(String browser) {
+        if (driverThread.get() == null) {
+            initializeDriver(browser);
+        }
+        return driverThread.get();
+    }
+
+    private static void initializeDriver(String browser) {
+        switch (browser.toLowerCase()) {
             case "edge":
-                driver = new EdgeDriver();
+                driverThread.set(new EdgeDriver());
                 break;
-                
+            case "firefox":
+                driverThread.set(new FirefoxDriver());
+                break;
+            case "headless":
+                driverThread.set(new ChromeDriver(new ChromeOptions().addArguments("--headless")));
+                break;
             default:
-                throw new IllegalArgumentException("Browser not supported: " + BROWSER);
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--disable-popup-blocking");
+                options.addArguments("--disable-notifications");
+                options.addArguments("--disable-features=PasswordManagerEnabled");
+                driverThread.set(new ChromeDriver(options));
         }
-        
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-        driver.manage().window().maximize();
+
+        driverThread.get().manage().window().maximize();
+        driverThread.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
-    
+
     public static void quitDriver() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
+        if (driverThread.get() != null) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            driverThread.get().quit();
+            driverThread.remove();
         }
     }
 }
