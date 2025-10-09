@@ -58,7 +58,7 @@
                     <threadCount>3</threadCount>
 
                     <!-- Fork settings - NEW METHOD -->
-                    <forkCount>3</forkCount>
+                    <forkCount>2</forkCount>
                     <reuseForks>false</reuseForks>
 
                     <!-- Combine argLines - IMPORTANT! -->
@@ -103,9 +103,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
-
 
         </plugins>
     </build>
