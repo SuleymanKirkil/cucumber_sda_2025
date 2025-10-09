@@ -16,7 +16,6 @@ Feature: Calculator Operations
   @subtraction
   Scenario: Subtract two numbers
     When I subtract 20 and 5
-    When I drop Calculator
     Then the result should be 15
 
   @multiplicaiton
